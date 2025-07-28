@@ -1,0 +1,23 @@
+# PDF Processing
+pymupdf==1.24.5 # Or the specific version you've tested and prefer
+
+# Machine Learning Core
+scikit-learn==1.4.2 # Or the specific version you've tested and prefer
+
+# Sentence Transformers Library
+# Updated to match the model's creation version for compatibility
+sentence-transformers==5.0.0 
+
+# Transformers library (sentence-transformers depends on this)
+# Pin a compatible version with sentence-transformers 5.0.0
+# Note: transformers 4.42.3 is generally compatible with sentence-transformers 2.x to 5.x
+transformers==4.42.3 
+
+# PyTorch (CPU-only for Python 3.11)
+# These versions are extracted directly from the command you provided:
+torch==2.3.0+cpu
+torchvision==0.18.0+cpu
+torchaudio==2.3.0+cpu
+
+# Note: huggingface_hub is a dependency of transformers and will be installed automatically.
+
