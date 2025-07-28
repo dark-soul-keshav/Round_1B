@@ -57,6 +57,10 @@ def get_embedding(text):
 def clean_section_title(title):
     return re.sub(r'^•\s*|[\n\r\t]+|^\s+|\s+$', '', title).strip()
 
+def get_page_number(heading):
+    """Returns the page number from heading dict using 'page' or 'page_num'."""
+    return heading.get("page") or heading.get("page_num")
+
 
 def extract_sections(pdf_path):
     """
@@ -100,7 +104,7 @@ def extract_sections(pdf_path):
     for i, current_heading in enumerate(headings):
         current_title = clean_section_title(current_heading["text"])
         # Page numbers in the outline are 1-based, so convert to 0-based index
-        current_page_idx = current_heading["page"] - 1
+        current_page_idx = get_page_number(current_heading) - 1
 
         # Find the start of the heading text on its specific page
         start_char_idx = page_texts[current_page_idx].find(current_title)
@@ -114,9 +118,9 @@ def extract_sections(pdf_path):
         if i + 1 < len(headings):
             next_heading = headings[i + 1]
             next_title = clean_section_title(next_heading["text"])
-            next_page_idx = next_heading["page"] - 1
+            next_page_idx = get_page_number(next_heading) - 1
 
-            # Find the start of the *next* heading on its specific page
+            # Find the start of the next heading on its specific page
             found_next_idx = page_texts[next_page_idx].find(next_title)
             if found_next_idx != -1:
                 end_page_idx = next_page_idx
@@ -142,7 +146,7 @@ def extract_sections(pdf_path):
         sections.append({
             "document": pdf_path,
             "section_title": current_heading["text"],
-            "page_number": current_heading["page"],
+            "page_number": get_page_number(current_heading),
             "text": final_text
         })
 
