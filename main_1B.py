@@ -16,7 +16,7 @@ PDF_FOLDER = "input_documents"
 
 # Output JSON location
 # CORRECTED: Point directly to the mounted output volume inside the container
-OUTPUT_PATH = "/app/output/output.json" 
+OUTPUT_PATH = "output_json_file/output.json" 
 
 # Model name used for Sentence Embeddings (can change to other supported names)
 EMBEDDING_MODEL_NAME = "./sentence_transformer_model" # save sentence transformer model multi-qa-MiniLM-L6-cos-v to folder sentence_transformer_model in same directory
@@ -100,7 +100,7 @@ def extract_sections(pdf_path):
     for i, current_heading in enumerate(headings):
         current_title = clean_section_title(current_heading["text"])
         # Page numbers in the outline are 1-based, so convert to 0-based index
-        current_page_idx = current_heading["page_num"] - 1
+        current_page_idx = current_heading["page"] - 1
 
         # Find the start of the heading text on its specific page
         start_char_idx = page_texts[current_page_idx].find(current_title)
@@ -114,7 +114,7 @@ def extract_sections(pdf_path):
         if i + 1 < len(headings):
             next_heading = headings[i + 1]
             next_title = clean_section_title(next_heading["text"])
-            next_page_idx = next_heading["page_num"] - 1
+            next_page_idx = next_heading["page"] - 1
 
             # Find the start of the *next* heading on its specific page
             found_next_idx = page_texts[next_page_idx].find(next_title)
@@ -142,7 +142,7 @@ def extract_sections(pdf_path):
         sections.append({
             "document": pdf_path,
             "section_title": current_heading["text"],
-            "page_number": current_heading["page_num"],
+            "page_number": current_heading["page"],
             "text": final_text
         })
 
